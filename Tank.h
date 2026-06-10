@@ -21,5 +21,6 @@ public:
 	void Release() override;
 private:
 	int hModel_;
+	int cam_Type;
 };
 
