@@ -5,9 +5,13 @@
 #include"Engine/Debug.h"
 #include"Ground.h"
 #include<string>
+#include"Engine/Camera.h"
 namespace {
 	XMVECTOR vFront = { 0,0,1,0 };//タンクの前ベクトル
 	const float moveSpeed = 0.1f;
+	const float FPS_CAM_BIAS = 0.2f;//カメラの高さの調整
+	const float TPS_CAM_BIAS = 5.0f;//カメラの高さの調整
+	const float TPS_CAM_BEHIND = -10.0f;
 	enum CAM_TYPE {
 		FIXED_CAM,
 		TPS_CAM,
@@ -21,6 +25,7 @@ namespace {
 		"TPS_CAMROT",
 		"FPS_CAM"
 	};
+
 }
 Tank::Tank(GameObject* parent):GameObject(parent,"Tank"),hModel_(-1),cam_Type(FIXED_CAM)
 {
@@ -30,10 +35,44 @@ void Tank::Initialize()
 {
 	hModel_ = Model::Load("TankBody.fbx");
 	assert(hModel_ >= 0);//モデルの読み込み失敗確認
+	cam_Type = FIXED_CAM;
 }
 
 void Tank::Update()
 {
+	XMVECTOR vpos = XMLoadFloat3(&transform_.position_);
+	XMMATRIX matrot = XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));//y軸回転行列
+	XMVECTOR move = XMVector3TransformCoord(vFront, matrot);
+	XMVECTOR vcam = { 0.0f,TPS_CAM_BIAS,TPS_CAM_BEHIND,0.0f };
+	switch (cam_Type) {
+	case FIXED_CAM:
+		SetFixedCam();
+		break;
+	case TPS_CAM:
+		XMFLOAT3 Tcampos = transform_.position_;
+		Tcampos.y = Tcampos.y+ TPS_CAM_BIAS;
+		Tcampos.z = Tcampos.z+TPS_CAM_BEHIND;
+		XMFLOAT3 TcamTarget = transform_.position_;
+		Camera::SetTarget(TcamTarget);
+		Camera::SetPosition(Tcampos);
+		break;
+	case TPS_CAMROT:
+		XMFLOAT3 TRcampos;
+		vcam = XMVector3TransformCoord(vcam, matrot);//タンクの回転をカメラに反映
+		XMStoreFloat3(&TRcampos, vpos + vcam);
+		Camera::SetTarget(transform_.position_);
+		Camera::SetPosition(TRcampos);
+		break;
+	case FPS_CAM:
+		XMFLOAT3 camTarget;
+		XMFLOAT3 campos=transform_.position_;
+		campos.y = campos.y + FPS_CAM_BIAS;
+		XMStoreFloat3(&camTarget, vpos + move);
+		Camera::SetTarget(camTarget);
+		Camera::SetPosition(campos);
+		//SetFpsCam();
+		break;
+	}
 	if (Input::IsKeyDown(DIK_C)) {
 		//0,1,2..CAM_TYPE_MAX-1の順でcam_typeを変更していく
 		cam_Type = (cam_Type + 1) % CAM_TYPE_MAX;
@@ -47,9 +86,6 @@ void Tank::Update()
 		transform_.rotate_.y+=0.5f;
 	}
 	if (Input::IsKey(DIK_W)) {//前進
-		XMVECTOR vpos = XMLoadFloat3(&transform_.position_);
-		XMMATRIX matrot = XMMatrixRotationY(XMConvertToRadians(transform_.rotate_.y));//y軸回転行列
-		XMVECTOR move =XMVector3TransformCoord(vFront,matrot);
 		vpos += moveSpeed * move;
 		XMStoreFloat3(&transform_.position_, vpos);
 	}
@@ -82,4 +118,15 @@ void Tank::Draw()
 
 void Tank::Release()
 {
+}
+
+void Tank::SetFixedCam()
+{
+	Camera::SetTarget(XMFLOAT3(0.0f, 0.0f, 0.0f));
+	Camera::SetPosition(XMFLOAT3(0.0f, 20.0f, -30.0f));
+}
+
+void Tank::SetFpsCam()
+{
+	
 }
