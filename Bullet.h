@@ -1,13 +1,14 @@
 #pragma once
 #include "Engine/GameObject.h"
-class TankHead :
+#include"Engine/SphereCollider.h"
+class Bullet :
     public GameObject
 {
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
-	TankHead(GameObject* parent);
-
+	Bullet(GameObject* parent);
+	~Bullet(){}
 	//初期化
 	void Initialize() override;
 
@@ -19,10 +20,12 @@ public:
 
 	//開放
 	void Release() override;
+
+	void SetMoveVector(const XMFLOAT3& move) { move_ = move; }
+	void OnCollision(GameObject* pTarget) override;
 private:
 	int hModel_;
-	int cam_Type;
-	bool isNeedLeseted;
-	bool isLeseting;
+	XMFLOAT3 move_;//弾の進行方向
+	SphereCollider* sc_;
 };
 

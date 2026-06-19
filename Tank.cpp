@@ -6,6 +6,7 @@
 #include"Ground.h"
 #include<string>
 #include"Engine/Camera.h"
+#include"TankHead.h"
 namespace {
 	XMVECTOR vFront = { 0,0,1,0 };//タンクの前ベクトル
 	const float moveSpeed = 0.1f;
@@ -36,6 +37,7 @@ void Tank::Initialize()
 	hModel_ = Model::Load("TankBody.fbx");
 	assert(hModel_ >= 0);//モデルの読み込み失敗確認
 	cam_Type = FIXED_CAM;
+	Instantiate<TankHead>(this);
 }
 
 void Tank::Update()
@@ -89,12 +91,10 @@ void Tank::Update()
 		vpos += moveSpeed * move;
 		XMStoreFloat3(&transform_.position_, vpos);
 	}
-	if (Input::IsKey(DIK_S)) {//後退
-		XMVECTOR vpos = XMLoadFloat3(&transform_.position_);
-		vpos -= moveSpeed * vFront;
+	if (Input::IsKey(DIK_S)) {
+		vpos -= moveSpeed * move;
 		XMStoreFloat3(&transform_.position_, vpos);
 	}
-
 	Debug::Log("Y angle=");
 	Debug::Log(transform_.rotate_.y,true);//trueは改行するかどうか
 	//レイキャストして、浮いてたら地面まで落とす

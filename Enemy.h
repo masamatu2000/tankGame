@@ -1,13 +1,14 @@
 #pragma once
 #include "Engine/GameObject.h"
-class TankHead :
+#include"Engine/SphereCollider.h"
+class Enemy :
     public GameObject
 {
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
-	TankHead(GameObject* parent);
-
+	Enemy(GameObject* parent);
+	~Enemy() {}
 	//初期化
 	void Initialize() override;
 
@@ -19,10 +20,10 @@ public:
 
 	//開放
 	void Release() override;
+	SphereCollider* GetCollider() { return sc_; }
 private:
 	int hModel_;
-	int cam_Type;
-	bool isNeedLeseted;
-	bool isLeseting;
+	SphereCollider* sc_;
+
 };
 

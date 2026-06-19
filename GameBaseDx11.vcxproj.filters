@@ -24,6 +24,9 @@
       <UniqueIdentifier>{47a6a3f5-8cfd-436b-8d58-beccd108f3f3}</UniqueIdentifier>
       <Extensions>hlsl</Extensions>
     </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{176e8367-0b65-4617-b33a-a8b19505468a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Engine\BoxCollider.cpp">
@@ -80,7 +83,6 @@
     <ClCompile Include="Engine\Transform.cpp">
       <Filter>01Engine\GameObject</Filter>
     </ClCompile>
-    <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="Engine\Audio.cpp">
       <Filter>01Engine\ResourceManager</Filter>
     </ClCompile>
@@ -96,10 +98,23 @@
     <ClCompile Include="Engine\VFX.cpp">
       <Filter>01Engine\ResourceManager</Filter>
     </ClCompile>
-    <ClCompile Include="PlayScene.cpp" />
-    <ClCompile Include="Ground.cpp" />
-    <ClCompile Include="Tank.cpp" />
-    <ClCompile Include="TankHead.cpp" />
+    <ClCompile Include="TestScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Ground.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayScene.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Tank.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="TankHead.cpp">
+      <Filter>Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Bullet.cpp" />
+    <ClCompile Include="Enemy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\BoxCollider.h">
@@ -156,7 +171,6 @@
     <ClInclude Include="Engine\Transform.h">
       <Filter>01Engine\GameObject</Filter>
     </ClInclude>
-    <ClInclude Include="TestScene.h" />
     <ClInclude Include="Engine\Audio.h">
       <Filter>01Engine\ResourceManager</Filter>
     </ClInclude>
@@ -172,10 +186,23 @@
     <ClInclude Include="Engine\VFX.h">
       <Filter>01Engine\ResourceManager</Filter>
     </ClInclude>
-    <ClInclude Include="PlayScene.h" />
-    <ClInclude Include="Ground.h" />
-    <ClInclude Include="Tank.h" />
-    <ClInclude Include="TankHead.h" />
+    <ClInclude Include="TestScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Ground.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Tank.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="TankHead.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Bullet.h" />
+    <ClInclude Include="Enemy.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Assets\Shader\Simple2D.hlsl">
