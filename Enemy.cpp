@@ -8,6 +8,8 @@ Enemy::Enemy(GameObject* parent):GameObject(parent,"Enemy"),hModel_(-1)
 void Enemy::Initialize()
 {
 	hModel_ = Model::Load("Enemy.fbx");
+
+	Model::SetAnimFrame(hModel_, 1, 100, 1.0f);
 	sc_ = new SphereCollider(transform_.position_, 0.5f);
 	AddCollider(sc_);
 }
